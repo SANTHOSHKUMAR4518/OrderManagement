@@ -1,0 +1,117 @@
+{% extends 'orders/base.html' %}
+
+{% block title %}
+Invoice
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container">
+
+    <div class="card shadow">
+
+        <div class="card-body">
+
+            <h1 class="text-center mb-4">Santhosh Order Management System</h1>
+
+            <h3 class="text-center">Order Invoice</h3>
+
+            <hr>
+
+
+            <div class="row">
+
+                <div class="col-md-6">
+
+                    <h5>Customer Details</h5>
+
+                    <p>
+                        Name: {{ order.customer_name }}
+                    </p>
+
+                </div>
+
+
+                <div class="col-md-6 text-end">
+
+                    <h5>Invoice Details</h5>
+
+                    <p>
+                        Order ID: {{ order.id }}
+                    </p>
+
+                    <p>
+                        Date: {{ order.order_date }}
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <hr>
+
+
+            <table class="table table-bordered text-center">
+
+                <tr class="table-dark">
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                </tr>
+
+
+                <tr>
+
+                    <td>
+                        {{ order.product.name }}
+                    </td>
+
+                    <td>
+                        {{ order.quantity }}
+                    </td>
+
+                    <td>
+                        ₹{{ order.product.price }}
+                    </td>
+
+                    <td>
+                        ₹{{ total }}
+                    </td>
+
+                </tr>
+
+            </table>
+
+
+            <h3 class="text-end">
+                Total Amount: ₹{{ total }}
+            </h3>
+
+
+            <div class="text-center mt-4">
+
+                <button onclick="window.print()" 
+                        class="btn btn-primary">
+                    Print Invoice
+                </button>
+
+
+                <a href="{% url 'view_orders' %}" 
+                   class="btn btn-secondary ms-2">
+                    Back
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+{% endblock %}

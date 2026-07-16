@@ -1,0 +1,153 @@
+{% extends 'orders/base.html' %}
+
+{% block title %}
+Dashboard
+{% endblock %}
+
+{% block content %}
+
+
+<div class="container mt-5">
+
+    <h1 class="text-center">Order Management Dashboard</h1>
+
+    <div class="row mt-5">
+
+        <div class="col-md-6">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h3>Total Products</h3>
+                    <h1>{{ total_products }}</h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h3>Total Orders</h3>
+                    <h1>{{ total_orders }}</h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mt-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h3>Total Revenue</h3>
+                    <h1>₹ {{ total_revenue }}</h1>
+                </div>
+            </div>
+        </div>
+</div>
+
+    </div>
+    <div class="mt-5">
+
+         <h2 class="text-center mb-4">Low Stock Products</h2>
+
+         <table class="table table-bordered table-striped table-hover">
+            <tr>
+              <th>Product Name</th>
+              <th>Quantity</th>
+            </tr>
+
+            {% for product in low_stock %}
+            <tr>
+              <td>{{ product.name }}</td>
+              <td>{{ product.quantity }}</td>
+            </tr>
+
+            {% empty %}
+            <tr>
+              <td colspan="2" class="text-center">
+                  No Low Stock Products
+              </td>
+            </tr>
+            {% endfor %}
+
+         </table>
+
+    <div class="mt-5">
+
+    <h2 class="text-center mb-4">Recent Orders</h2>
+
+    <table class="table table-bordered table-striped table-hover">
+
+        <tr>
+            <th>Product Name</th>
+            <th>Quantity</th>
+        </tr>
+
+        {% for order in recent_orders %}
+        <tr>
+            <td>{{ order.product.name }}</td>
+            <td>{{ order.quantity }}</td>
+        </tr>
+
+        {% empty %}
+        <tr>
+            <td colspan="2" class="text-center">
+                No Recent Orders
+            </td>
+        </tr>
+        {% endfor %}
+
+    </table>
+
+    </div>
+    <div class="mt-5">
+
+    <h2 class="text-center mb-4">
+        Product Stock Chart
+    </h2>
+
+    <canvas id="stockChart"></canvas>
+
+    </div>
+    <div class="text-center mt-4">
+
+    <a href="{% url 'view_products' %}" class="btn btn-primary mx-2">
+        View Products
+    </a>
+
+    <a href="{% url 'view_orders' %}" class="btn btn-success mx-2">
+        View Orders
+    </a>
+
+    <a href="{% url 'add_product' %}" class="btn btn-warning mx-2">
+        Add Product
+    </a>
+
+    <a href="{% url 'add_order' %}" class="btn btn-danger mx-2">
+        Add Order
+    </a>
+
+</div>
+<script>
+
+const ctx = document.getElementById('stockChart');
+
+new Chart(ctx, {
+
+    type: 'bar',
+
+    data: {
+
+        labels: {{ product_names|safe }},
+
+        datasets: [{
+            label: 'Quantity',
+            data: {{ product_quantities|safe }},
+        }]
+
+    },
+
+    options: {
+        responsive: true
+    }
+
+});
+
+</script>
+{% endblock %}

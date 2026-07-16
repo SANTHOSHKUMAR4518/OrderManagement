@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Order</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+<h2 class="text-center mb-4">Edit Order</h2>
+<form method="POST">
+    {% csrf_token %}
+
+    <label>Customer Name</label><br>
+    <input type="text"
+           name="customer_name"
+           value="{{ order.customer_name }}"
+           required><br><br>
+
+    <label>Product</label><br>
+    <select name="product">
+        {% for product in products %}
+        <option value="{{ product.id }}"
+            {% if product.id == order.product.id %}
+                selected
+            {% endif %}>
+            {{ product.name }}
+        </option>
+        {% endfor %}
+    </select>
+
+    <br><br>
+
+    <label>Quantity</label><br>
+    <input type="number"
+           name="quantity"
+           value="{{ order.quantity }}"
+           required>
+
+    <br><br>
+
+    <button type="submit">
+        Update Order
+    </button>
+
+</form>
+</div>
+</body>
+</html>
