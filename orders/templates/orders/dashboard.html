@@ -13,89 +13,193 @@ Dashboard
 
     <div class="row mt-5">
 
-        <div class="col-md-6">
-            <div class="card text-center">
-                <div class="card-body">
-                    <h3>Total Products</h3>
-                    <h1>{{ total_products }}</h1>
-                </div>
+    <div class="col-md-4">
+        <div class="card bg-primary text-white shadow-lg border-0 rounded-4">
+            <div class="card-body text-center">
+                <h5>📦 Total Products</h5>
+                <h1>{{ total_products }}</h1>
             </div>
         </div>
+    </div>
 
-        <div class="col-md-6">
-            <div class="card text-center">
-                <div class="card-body">
-                    <h3>Total Orders</h3>
-                    <h1>{{ total_orders }}</h1>
-                </div>
+    <div class="col-md-4">
+        <div class="card bg-success text-white shadow-lg border-0 rounded-4">
+            <div class="card-body text-center">
+                <h5>🛒 Total Orders</h5>
+                <h1>{{ total_orders }}</h1>
             </div>
         </div>
+    </div>
 
-        <div class="col-md-6 mt-4">
-            <div class="card text-center">
-                <div class="card-body">
-                    <h3>Total Revenue</h3>
-                    <h1>₹ {{ total_revenue }}</h1>
-                </div>
+    <div class="col-md-4">
+        <div class="card bg-warning text-dark shadow-lg border-0 rounded-4">
+            <div class="card-body text-center">
+                <h5>💰 Total Revenue</h5>
+                <h1>₹{{ total_revenue }}</h1>
             </div>
         </div>
+    </div>
+
 </div>
 
     </div>
-    <div class="mt-5">
+    <!-- Low Stock Products -->
 
-         <h2 class="text-center mb-4">Low Stock Products</h2>
+<div class="card shadow-lg border-0 rounded-4 mt-5">
 
-         <table class="table table-bordered table-striped table-hover">
-            <tr>
-              <th>Product Name</th>
-              <th>Quantity</th>
-            </tr>
+    <div class="card-header bg-danger text-white">
 
-            {% for product in low_stock %}
-            <tr>
-              <td>{{ product.name }}</td>
-              <td>{{ product.quantity }}</td>
-            </tr>
-
-            {% empty %}
-            <tr>
-              <td colspan="2" class="text-center">
-                  No Low Stock Products
-              </td>
-            </tr>
-            {% endfor %}
-
-         </table>
-
-    <div class="mt-5">
-
-    <h2 class="text-center mb-4">Recent Orders</h2>
-
-    <table class="table table-bordered table-striped table-hover">
-
-        <tr>
-            <th>Product Name</th>
-            <th>Quantity</th>
-        </tr>
-
-        {% for order in recent_orders %}
-        <tr>
-            <td>{{ order.product.name }}</td>
-            <td>{{ order.quantity }}</td>
-        </tr>
-
-        {% empty %}
-        <tr>
-            <td colspan="2" class="text-center">
-                No Recent Orders
-            </td>
-        </tr>
-        {% endfor %}
-
-    </table>
+        <h4 class="mb-0">
+            ⚠️ Low Stock Products
+        </h4>
 
     </div>
+
+    <div class="card-body">
+
+        <table class="table table-hover table-bordered align-middle">
+
+            <thead class="table-danger">
+
+                <tr>
+
+                    <th>Product Name</th>
+
+                    <th class="text-center">Quantity</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for product in low_stock %}
+
+                <tr>
+
+                    <td>
+                        {{ product.name }}
+                    </td>
+
+                    <td class="text-center">
+
+                        {% if product.quantity <= 2 %}
+
+                            <span class="badge bg-danger fs-6">
+                                {{ product.quantity }}
+                            </span>
+
+                        {% elif product.quantity <= 4 %}
+
+                            <span class="badge bg-warning text-dark fs-6">
+                                {{ product.quantity }}
+                            </span>
+
+                        {% else %}
+
+                            <span class="badge bg-success fs-6">
+                                {{ product.quantity }}
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="2" class="text-center text-success fw-bold">
+
+                        🎉 No Low Stock Products
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+    <!-- Recent Orders -->
+
+<div class="card shadow-lg border-0 rounded-4 mt-5">
+
+    <div class="card-header bg-success text-white">
+
+        <h4 class="mb-0">
+            🛒 Recent Orders
+        </h4>
+
+    </div>
+
+    <div class="card-body">
+
+        <table class="table table-hover table-bordered align-middle">
+
+            <thead class="table-success">
+
+                <tr>
+
+                    <th>Product Name</th>
+
+                    <th class="text-center">Quantity</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for order in recent_orders %}
+
+                <tr>
+
+                    <td>
+                        {{ order.product.name }}
+                    </td>
+
+                    <td class="text-center">
+
+                        <span class="badge bg-success fs-6">
+
+                            {{ order.quantity }}
+
+                        </span>
+
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="2" class="text-center text-primary fw-bold">
+
+                        📦 No Recent Orders
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
     <div class="mt-5">
 
     <h2 class="text-center mb-4">
