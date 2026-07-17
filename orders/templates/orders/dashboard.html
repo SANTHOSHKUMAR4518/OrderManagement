@@ -211,8 +211,11 @@ Dashboard
 </div>
     <div class="mt-5">
 
-    <h2 class="text-center mb-4">
-        Product Stock Chart
+    <h2 class="display-4 fw-bold text-white p-4 rounded-4 shadow-lg"
+        style="background: linear-gradient(90deg, #0d6efd, #6610f2, #198754);">
+
+        📊 Product Stock Chart
+
     </h2>
 
     <canvas id="stockChart"></canvas>
@@ -250,14 +253,97 @@ new Chart(ctx, {
         labels: {{ product_names|safe }},
 
         datasets: [{
-            label: 'Quantity',
+
+            label: 'Available Stock',
+
             data: {{ product_quantities|safe }},
+
+            backgroundColor: [
+                '#0d6efd',
+                '#198754',
+                '#ffc107',
+                '#dc3545',
+                '#6f42c1',
+                '#fd7e14',
+                '#20c997',
+                '#6610f2',
+                '#0dcaf0',
+                '#e83e8c'
+            ],
+
+            borderColor: [
+                '#0b5ed7',
+                '#157347',
+                '#ffca2c',
+                '#bb2d3b',
+                '#59359c',
+                '#e96b09',
+                '#1aa179',
+                '#520dc2',
+                '#31d2f2',
+                '#d63384'
+            ],
+
+            borderWidth: 2,
+
+            borderRadius: 10
+
         }]
 
     },
 
     options: {
-        responsive: true
+
+        responsive: true,
+
+        plugins: {
+
+            legend: {
+
+                labels: {
+
+                    color: "black",
+
+                    font: {
+
+                        size: 16,
+
+                        weight: "bold"
+
+                    }
+
+                }
+
+            }
+
+        },
+
+        scales: {
+
+            y: {
+
+                beginAtZero: true,
+
+                ticks: {
+
+                    color: "black"
+
+                }
+
+            },
+
+            x: {
+
+                ticks: {
+
+                    color: "black"
+
+                }
+
+            }
+
+        }
+
     }
 
 });
