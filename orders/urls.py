@@ -39,4 +39,4 @@ urlpatterns = [
     path("track-order/<int:id>/",views.track_order,name="track_order"),
     path("users/",views.user_list,name="user_list"),
     path("users/toggle/<int:id>/",views.toggle_user_status,name="toggle_user_status"),
-]cc
+]
