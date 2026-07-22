@@ -1,67 +1,100 @@
-{% extends 'orders/base.html' %}
+<!DOCTYPE html>
 
-{% block title %}
-Invoice
-{% endblock %}
-
-
-{% block content %}
-
-<div class="container">
-
-    <div class="card shadow">
-
-        <div class="card-body">
-
-            <h1 class="text-center mb-4">Santhosh Order Management System</h1>
-
-            <h3 class="text-center">Order Invoice</h3>
-
-            <hr>
+<html>
+<head>
+    <title>Order Invoice</title>
 
 
-            <div class="row">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 
-                <div class="col-md-6">
-
-                    <h5>Customer Details</h5>
-
-                    <p>
-                        Name: {{ order.customer_name }}
-                    </p>
-
-                </div>
+<style>
+    @media print {
+        .no-print {
+            display: none;
+        }
+    }
+</style>
 
 
-                <div class="col-md-6 text-end">
+</head>
 
-                    <h5>Invoice Details</h5>
+<body>
 
-                    <p>
-                        Order ID: {{ order.id }}
-                    </p>
+<div class="container mt-5">
 
-                    <p>
-                        Date: {{ order.order_date }}
-                    </p>
 
-                </div>
+<div class="card shadow">
+
+    <div class="card-body p-5">
+
+        <div class="text-center mb-4">
+
+            <h1 class="fw-bold">
+                SMART ORDER MANAGEMENT SYSTEM
+            </h1>
+
+            <h4 class="text-muted">
+                Order Invoice
+            </h4>
+
+        </div>
+
+
+        <hr>
+
+
+        <div class="row mb-4">
+
+            <div class="col-md-6">
+
+                <h5>Customer Details</h5>
+
+                <p>
+                    <strong>Name:</strong>
+                    {{ order.customer_name }}
+                </p>
 
             </div>
 
 
-            <hr>
+            <div class="col-md-6 text-md-end">
+
+                <h5>Invoice Details</h5>
+
+                <p>
+                    <strong>Order ID:</strong>
+                    #{{ order.id }}
+                </p>
+
+                <p>
+                    <strong>Date:</strong>
+                    {{ order.order_date }}
+                </p>
+
+                <p>
+                    <strong>Status:</strong>
+                    {{ order.status }}
+                </p>
+
+            </div>
+
+        </div>
 
 
-            <table class="table table-bordered text-center">
+        <table class="table table-bordered text-center">
 
-                <tr class="table-dark">
+            <thead class="table-dark">
+
+                <tr>
                     <th>Product</th>
                     <th>Quantity</th>
-                    <th>Price</th>
+                    <th>Unit Price</th>
                     <th>Total</th>
                 </tr>
 
+            </thead>
+
+            <tbody>
 
                 <tr>
 
@@ -74,44 +107,53 @@ Invoice
                     </td>
 
                     <td>
-                        ₹{{ order.product.price }}
+                        ₹ {{ order.product.price }}
                     </td>
 
                     <td>
-                        ₹{{ total }}
+                        ₹ {{ total }}
                     </td>
 
                 </tr>
 
-            </table>
+            </tbody>
+
+        </table>
 
 
-            <h3 class="text-end">
-                Total Amount: ₹{{ total }}
-            </h3>
+        <div class="text-end mt-4">
 
-
-            <div class="text-center mt-4">
-
-                <button onclick="window.print()" 
-                        class="btn btn-primary">
-                    Print Invoice
-                </button>
-
-
-                <a href="{% url 'view_orders' %}" 
-                   class="btn btn-secondary ms-2">
-                    Back
-                </a>
-
-            </div>
-
+            <h4>
+                Total Amount:
+                ₹ {{ total }}
+            </h4>
 
         </div>
+
+
+        <div class="text-center mt-5 no-print">
+
+            <button
+                onclick="window.print()"
+                class="btn btn-success me-2">
+                🖨️ Print Invoice
+            </button>
+
+            <a
+                href="{% url 'my_orders' %}"
+                class="btn btn-secondary">
+                Back to My Orders
+            </a>
+
+        </div>
+
 
     </div>
 
 </div>
 
 
-{% endblock %}
+</div>
+
+</body>
+</html>

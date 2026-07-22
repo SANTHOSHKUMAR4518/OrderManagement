@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>User Dashboard</title>
+
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+
+</head>
+
+<body>
+
+<nav class="navbar navbar-dark bg-dark">
+
+
+<div class="container">
+
+    <span class="navbar-brand">
+        🛍️ Order Management System
+    </span>
+
+    <div>
+
+        <a href="{% url 'cart' %}"
+           class="btn btn-warning me-2">
+            🛒 Cart
+        </a>
+
+        <a href="{% url 'my_orders' %}"
+            class="btn btn-info me-2">
+            📦 My Orders
+        </a>
+
+        <a href="{% url 'logout' %}"
+           class="btn btn-danger">
+            Logout
+        </a>
+
+    </div>
+
+</div>
+
+
+</nav>
+
+<div class="container mt-5">
+
+
+<h2 class="text-center mb-4">
+    Welcome, {{ user.username }} 👋
+</h2>
+
+<h4 class="mb-3">
+    Available Products
+</h4>
+
+
+<div class="row">
+
+    {% for product in products %}
+
+    <div class="col-md-4 mb-4">
+
+        <div class="card shadow h-100">
+
+            <div class="card-body text-center">
+
+                <h5 class="card-title">
+                    {{ product.name }}
+                </h5>
+
+                <p class="card-text">
+                    Price: ₹ {{ product.price }}
+                </p>
+
+                <p class="card-text">
+                    Available Stock: {{ product.quantity }}
+                </p>
+
+                {% if product.quantity > 0 %}
+
+                    <a href="{% url 'add_to_cart' product.id %}"
+                       class="btn btn-success">
+                        🛒 Add to Cart
+                    </a>
+
+                {% else %}
+
+                    <button class="btn btn-secondary" disabled>
+                        Out of Stock
+                    </button>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% empty %}
+
+    <div class="text-center">
+        <p>No products available.</p>
+    </div>
+
+    {% endfor %}
+
+</div>
+
+
+</div>
+
+</body>
+</html>

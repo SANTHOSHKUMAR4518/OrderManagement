@@ -41,6 +41,14 @@ Dashboard
     </div>
 
     <div class="col-md-4">
+    <div class="card bg-info text-white shadow-lg border-0 rounded-4">
+        <div class="card-body text-center">
+            <h5>👤 Total Users</h5>
+            <h1>{{ total_users }}</h1>
+        </div>
+    </div>
+</div>
+    <div class="col-md-4">
         <div class="card bg-warning text-dark shadow-lg border-0 rounded-4">
             <div class="card-body text-center">
                 <h5>💰 Total Revenue</h5>
@@ -48,167 +56,265 @@ Dashboard
             </div>
         </div>
     </div>
+<h3 class="mt-5 mb-3">
+    📊 Order Status Overview
+</h3>
+    <div class="row g-4 mt-2">
+
+    <div class="col-md-2">
+        <div class="card bg-warning text-dark shadow border-0 rounded-4">
+            <div class="card-body text-center">
+                <h6>⏳ Pending</h6>
+                <h2>{{ pending_orders }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-2">
+        <div class="card bg-primary text-white shadow border-0 rounded-4">
+            <div class="card-body text-center">
+                <h6>✅ Confirmed</h6>
+                <h2>{{ confirmed_orders }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card bg-info text-dark shadow border-0 rounded-4">
+            <div class="card-body text-center">
+                <h6>⚙️ Processing</h6>
+                <h2>{{ processing_orders }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-2">
+        <div class="card bg-secondary text-white shadow border-0 rounded-4">
+            <div class="card-body text-center">
+                <h6>🚚 Shipped</h6>
+                <h2>{{ shipped_orders }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card bg-success text-white shadow border-0 rounded-4">
+            <div class="card-body text-center">
+                <h6>📦 Delivered</h6>
+                <h2>{{ delivered_orders }}</h2>
+            </div>
+        </div>
+    </div>
+
+</div>
 
 </div>
 
     </div>
-    <!-- Low Stock Products -->
+    
+<!-- Low Stock Alerts -->
 
 <div class="card shadow-lg border-0 rounded-4 mt-5">
 
     <div class="card-header bg-danger text-white">
 
         <h3 class="mb-0">
-            ⚠️ Low Stock Products
+            ⚠️ Low Stock Alerts
         </h3>
 
     </div>
 
     <div class="card-body">
 
-        <table class="table table-hover table-bordered align-middle">
+        {% if low_stock %}
 
-            <thead class="table-danger">
+        <div class="table-responsive">
 
-                <tr>
+            <table class="table table-bordered table-hover text-center align-middle">
 
-                    <th>Product Name</th>
+                <thead class="table-danger">
 
-                    <th class="text-center">Quantity</th>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Available Quantity</th>
+                        <th>Alert</th>
+                    </tr>
 
-                </tr>
+                </thead>
 
-            </thead>
+                <tbody>
 
-            <tbody>
+                    {% for product in low_stock %}
 
-                {% for product in low_stock %}
+                    <tr>
 
-                <tr>
+                        <td>
+                            {{ product.name }}
+                        </td>
 
-                    <td>
-                        {{ product.name }}
-                    </td>
-
-                    <td class="text-center">
-
-                        {% if product.quantity <= 2 %}
-
+                        <td>
                             <span class="badge bg-danger fs-6">
                                 {{ product.quantity }}
                             </span>
+                        </td>
 
-                        {% elif product.quantity <= 4 %}
+                        <td>
 
-                            <span class="badge bg-warning text-dark fs-6">
-                                {{ product.quantity }}
-                            </span>
+                            {% if product.quantity == 0 %}
 
-                        {% else %}
+                                <span class="badge bg-dark">
+                                    ❌ Out of Stock
+                                </span>
 
-                            <span class="badge bg-success fs-6">
-                                {{ product.quantity }}
-                            </span>
+                            {% else %}
 
-                        {% endif %}
+                                <span class="badge bg-warning text-dark">
+                                    ⚠️ Low Stock
+                                </span>
 
-                    </td>
+                            {% endif %}
 
-                </tr>
+                        </td>
 
-                {% empty %}
+                    </tr>
 
-                <tr>
+                    {% endfor %}
 
-                    <td colspan="2" class="text-center text-success fw-bold">
+                </tbody>
 
-                        🎉 No Low Stock Products
+            </table>
 
-                    </td>
+        </div>
 
-                </tr>
+        {% else %}
 
-                {% endfor %}
+        <div class="alert alert-success text-center mb-0">
 
-            </tbody>
+            ✅ All products have sufficient stock.
 
-        </table>
+        </div>
+
+        {% endif %}
 
     </div>
 
 </div>
+    <h3 class="mt-5 mb-3">
+    🕒 Recent Orders
+</h3>
 
-    <!-- Recent Orders -->
-
-<div class="card shadow-lg border-0 rounded-4 mt-5">
-
-    <div class="card-header bg-success text-white">
-
-        <h3 class="mb-0">
-            🛒 Recent Orders
-        </h3>
-
-    </div>
+<div class="card shadow border-0 rounded-4">
 
     <div class="card-body">
 
-        <table class="table table-hover table-bordered align-middle">
+        <div class="table-responsive">
 
-            <thead class="table-success">
+            <table class="table table-bordered table-striped table-hover text-center align-middle">
 
-                <tr>
+                <thead class="table-dark">
 
-                    <th>Product Name</th>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Customer</th>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Total Amount</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                    </tr>
 
-                    <th class="text-center">Quantity</th>
+                </thead>
 
-                </tr>
+                <tbody>
 
-            </thead>
+                    {% for order in recent_orders %}
 
-            <tbody>
+                    <tr>
 
-                {% for order in recent_orders %}
+                        <td>
+                            #{{ order.id }}
+                        </td>
 
-                <tr>
+                        <td>
+                            {{ order.customer_name }}
+                        </td>
 
-                    <td>
-                        {{ order.product.name }}
-                    </td>
+                        <td>
+                            {{ order.product.name }}
+                        </td>
 
-                    <td class="text-center">
-
-                        <span class="badge bg-success fs-6">
-
+                        <td>
                             {{ order.quantity }}
+                        </td>
 
-                        </span>
+                        <td>
+                            ₹{{ order.total_price }}
+                        </td>
 
-                    </td>
+                        <td>
 
-                </tr>
+                            {% if order.status == "Pending" %}
 
-                {% empty %}
+                                <span class="badge bg-warning text-dark">
+                                    Pending
+                                </span>
 
-                <tr>
+                            {% elif order.status == "Confirmed" %}
 
-                    <td colspan="2" class="text-center text-primary fw-bold">
+                                <span class="badge bg-primary">
+                                    Confirmed
+                                </span>
 
-                        📦 No Recent Orders
+                            {% elif order.status == "Processing" %}
 
-                    </td>
+                                <span class="badge bg-info text-dark">
+                                    Processing
+                                </span>
 
-                </tr>
+                            {% elif order.status == "Shipped" %}
 
-                {% endfor %}
+                                <span class="badge bg-secondary">
+                                    Shipped
+                                </span>
 
-            </tbody>
+                            {% elif order.status == "Delivered" %}
 
-        </table>
+                                <span class="badge bg-success">
+                                    Delivered
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+                            {{ order.order_date }}
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="7">
+                            No recent orders available.
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
 
     </div>
 
 </div>
+
     <div class="mt-5">
 
     <h3 class="display-4 fw-bold text-white p-4 rounded-4 shadow-lg"
@@ -237,6 +343,10 @@ Dashboard
 
     <a href="{% url 'add_order' %}" class="btn btn-danger mx-2">
         Add Order
+    </a>
+
+    <a href="{% url 'user_list' %}" class="btn btn-info mx-2">
+        👥 Manage Users
     </a>
 
 </div>

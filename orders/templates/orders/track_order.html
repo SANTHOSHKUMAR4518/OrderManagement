@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+
+```
+<title>Track Order</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+
+    .tracking-step {
+        padding: 20px;
+        text-align: center;
+    }
+
+    .step-circle {
+        width: 55px;
+        height: 55px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: auto;
+        font-size: 24px;
+    }
+
+    .completed {
+        background-color: #198754;
+        color: white;
+    }
+
+    .current {
+        background-color: #0d6efd;
+        color: white;
+    }
+
+    .pending {
+        background-color: #dee2e6;
+        color: #6c757d;
+    }
+
+</style>
+```
+
+</head>
+
+<body>
+
+<nav class="navbar navbar-dark bg-dark">
+
+```
+<div class="container">
+
+    <span class="navbar-brand">
+        🚚 SMART ORDER
+    </span>
+
+    <a href="{% url 'my_orders' %}"
+       class="btn btn-light">
+        Back to My Orders
+    </a>
+
+</div>
+```
+
+</nav>
+
+<div class="container mt-5">
+
+```
+<div class="card shadow">
+
+    <div class="card-body">
+
+        <h2 class="text-center mb-4">
+            Track Your Order
+        </h2>
+
+
+        <div class="text-center mb-4">
+
+            <h5>
+                Order #{{ order.id }}
+            </h5>
+
+            <p>
+                Product:
+                <strong>
+                    {{ order.product.name }}
+                </strong>
+            </p>
+
+        </div>
+
+
+        <div class="alert alert-info text-center">
+
+            Current Status:
+
+            <strong>
+                {{ order.status }}
+            </strong>
+
+        </div>
+
+
+        <div class="row mt-5">
+
+
+            <!-- Pending -->
+
+            <div class="col tracking-step">
+
+                {% if order.status == "Pending" %}
+
+                    <div class="step-circle current">
+                        1
+                    </div>
+
+                {% else %}
+
+                    <div class="step-circle completed">
+                        ✓
+                    </div>
+
+                {% endif %}
+
+                <p class="mt-2">
+                    <strong>
+                        Pending
+                    </strong>
+                </p>
+
+            </div>
+
+
+            <!-- Confirmed -->
+
+            <div class="col tracking-step">
+
+                {% if order.status == "Confirmed" %}
+
+                    <div class="step-circle current">
+                        2
+                    </div>
+
+                {% elif order.status == "Pending" %}
+
+                    <div class="step-circle pending">
+                        2
+                    </div>
+
+                {% else %}
+
+                    <div class="step-circle completed">
+                        ✓
+                    </div>
+
+                {% endif %}
+
+                <p class="mt-2">
+                    <strong>
+                        Confirmed
+                    </strong>
+                </p>
+
+            </div>
+
+
+            <!-- Processing -->
+
+            <div class="col tracking-step">
+
+                {% if order.status == "Processing" %}
+
+                    <div class="step-circle current">
+                        3
+                    </div>
+
+                {% elif order.status == "Pending" or order.status == "Confirmed" %}
+
+                    <div class="step-circle pending">
+                        3
+                    </div>
+
+                {% else %}
+
+                    <div class="step-circle completed">
+                        ✓
+                    </div>
+
+                {% endif %}
+
+                <p class="mt-2">
+                    <strong>
+                        Processing
+                    </strong>
+                </p>
+
+            </div>
+
+
+            <!-- Shipped -->
+
+            <div class="col tracking-step">
+
+                {% if order.status == "Shipped" %}
+
+                    <div class="step-circle current">
+                        4
+                    </div>
+
+                {% elif order.status == "Pending" or order.status == "Confirmed" or order.status == "Processing" %}
+
+                    <div class="step-circle pending">
+                        4
+                    </div>
+
+                {% else %}
+
+                    <div class="step-circle completed">
+                        ✓
+                    </div>
+
+                {% endif %}
+
+                <p class="mt-2">
+                    <strong>
+                        Shipped
+                    </strong>
+                </p>
+
+            </div>
+
+
+            <!-- Delivered -->
+
+            <div class="col tracking-step">
+
+                {% if order.status == "Delivered" %}
+
+                    <div class="step-circle current">
+                        5
+                    </div>
+
+                {% else %}
+
+                    <div class="step-circle pending">
+                        5
+                    </div>
+
+                {% endif %}
+
+                <p class="mt-2">
+                    <strong>
+                        Delivered
+                    </strong>
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="text-center mt-5">
+
+            <a href="{% url 'invoice' order.id %}"
+               class="btn btn-primary me-2">
+                🧾 View Invoice
+            </a>
+
+            <a href="{% url 'my_orders' %}"
+               class="btn btn-secondary">
+                Back to My Orders
+            </a>
+
+        </div>
+
+
+    </div>
+
+</div>
+```
+
+</div>
+
+</body>
+</html>
